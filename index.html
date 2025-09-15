@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住宿案報告產生器(智慧選單板)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        .form-label {
+            @apply block text-sm font-medium text-slate-700 mb-1;
+        }
+        .form-input, .form-select {
+            @apply w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500;
+        }
+        .form-textarea {
+             @apply w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 h-24;
+        }
+        .btn {
+            @apply px-6 py-2 rounded-md font-semibold text-white shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200;
+        }
+        .btn-primary {
+            @apply bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500;
+        }
+        .btn-secondary {
+            @apply bg-slate-600 hover:bg-slate-700 focus:ring-slate-500;
+        }
+        .section-title {
+            @apply text-lg font-semibold text-slate-800 border-b-2 border-indigo-200 pb-2 mb-4;
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div class="container mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 relative">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-800">住宿案報告產生器(智慧選單板)</h1>
+                <p class="text-slate-500 mt-2">請點選或輸入案主資訊，快速生成標準化評估報告。</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Section 1: Basic Info -->
+                <section>
+                    <h2 class="section-title">一、基本資料與評估目的</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                        <div>
+                            <label for="caseAge" class="form-label">年齡</label>
+                            <input type="number" id="caseAge" class="form-input" placeholder="例如：74">
+                        </div>
+                        <div>
+                            <label for="caseGender" class="form-label">性別</label>
+                            <select id="caseGender" class="form-select">
+                                <option>男性</option>
+                                <option>女性</option>
+                                <option>其他</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="disability" class="form-label">障礙類別/程度</label>
+                            <input type="text" id="disability" class="form-input" placeholder="例如：第七類重度">
+                        </div>
+                        <div class="lg:col-span-3">
+                            <label for="institution" class="form-label">安置機構</label>
+                            <input type="text" id="institution" class="form-input" placeholder="例如：兆如老人安養護中心">
+                        </div>
+                        <div class="lg:col-span-3">
+                            <label for="assessmentPurpose-select" class="form-label">評估目的</label>
+                            <select id="assessmentPurpose-select" data-custom-target="assessmentPurpose-custom" class="form-select custom-select">
+                                <option>機構費用由家屬分攤，此次因欲申請住宿式照顧費用補助，故提出需求評估申請</option>
+                                <option>持續領有住宿式照顧費用補助，機構費用差額由家屬分擔，此次因身障證明屆期重鑑，故進行需求評估</option>
+                                <option>持續領有住宿式照顧費用補助，機構費用差額由家屬分擔，此次因身障證明屆期重鑑，故進行需求評估</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="assessmentPurpose-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂評估目的">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Family Support -->
+                <section>
+                    <h2 class="section-title">二、家庭與社會支持系統</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="familyStatus" class="form-label">家庭狀況</label>
+                            <input type="text" id="familyStatus" class="form-input" placeholder="例如：喪偶，育有兩子一女">
+                        </div>
+                        <div>
+                            <label for="mainContact-select" class="form-label">主要聯絡人/支持狀況</label>
+                             <select id="mainContact-select" data-custom-target="mainContact-custom" class="form-select custom-select">
+                                <option>oo為主要聯絡人，支持狀況佳，探視頻繁</option>
+                                <option>oo為主要聯絡人，支持狀況尚可</option>
+                                <option>家屬支持狀況不佳，相關事宜由機構人員協助處理</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="mainContact-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂支持狀況">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: Learning and Applying Knowledge -->
+                <section>
+                    <h2 class="section-title">三、學習與運用知識</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="cognition-select" class="form-label">認知狀況</label>
+                            <select id="cognition-select" data-custom-target="cognition-custom" class="form-select custom-select">
+                                <option>狀況佳</option>
+                                <option>時好時壞</option>
+                                <option>不佳</option>
+                                <option>無法判定</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="cognition-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂認知狀況">
+                        </div>
+                         <div>
+                            <label for="sensory-select" class="form-label">感官功能</label>
+                            <select id="sensory-select" data-custom-target="sensory-custom" class="form-select custom-select">
+                                <option>視、聽功能無虞</option>
+                                <option>聽功能不佳，視力狀況尚可</option>
+                                <option>視、聽功能無法判定</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="sensory-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂感官功能">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Emotion & Routine Tasks -->
+                <section>
+                    <h2 class="section-title">四、情緒及執行日常例行事務能力</h2>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="emotion-select" class="form-label">情緒狀況</label>
+                            <select id="emotion-select" data-custom-target="emotion-custom" class="form-select custom-select">
+                                <option>穩定</option>
+                                <option>不穩</option>
+                                <option>無法判定</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="emotion-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂情緒狀況">
+                        </div>
+                        <div>
+                            <label for="routineTasks-select" class="form-label">執行日常例行事務能力</label>
+                            <select id="routineTasks-select" data-custom-target="routineTasks-custom" class="form-select custom-select">
+                                <option>尚可</option>
+                                <option>稍不佳</option>
+                                <option>不佳</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="routineTasks-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂描述">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Communication -->
+                <section>
+                    <h2 class="section-title">五、溝通能力</h2>
+                     <div>
+                        <label for="communication-select" class="form-label">溝通能力</label>
+                        <select id="communication-select" data-custom-target="communication-custom" class="form-select custom-select">
+                            <option>口語表達能力佳，與人溝通無虞</option>
+                            <option>可表達及理解簡單語句，尚可與人溝通</option>
+                            <option>狀況佳時可表達簡單詞彙，但與人溝通稍有困難</option>
+                            <option>無口語表達能力，與人溝通有困難</option>
+                             <option value="custom">其他（請手動輸入）</option>
+                        </select>
+                        <input type="text" id="communication-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂溝通能力">
+                    </div>
+                </section>
+
+                <!-- Section 6: Mobility -->
+                <section>
+                    <h2 class="section-title">六、行動</h2>
+                     <div>
+                        <label for="mobility-select" class="form-label">行動</label>
+                        <select id="mobility-select" data-custom-target="mobility-custom" class="form-select custom-select">
+                            <option>四肢功能無礙，移行無須輔具</option>
+                            <option>下肢功能不佳，移行須使用拐杖/四腳拐/助行器</option>
+                            <option>下肢功能不佳，移行須使用拐杖/四腳拐/助行器，外出須使用輪椅並由他人協助推行</option>
+                            <option>下肢肌肉無力，移行須使用輪椅並由他人協助推行</option>
+                            <option>四肢肌肉無力，平時多臥床</option>
+                            <option value="custom">其他（請手動輸入）</option>
+                        </select>
+                        <input type="text" id="mobility-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂行動功能">
+                    </div>
+                </section>
+                
+                <!-- Section 7: Self-Care Ability (ADLs) -->
+                <section>
+                    <h2 class="section-title">七、自我照顧</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="adls-select" class="form-label">自我照顧</label>
+                            <select id="adls-select" data-custom-target="adls-custom" class="form-select custom-select">
+                                <option>生活自理無虞</option>
+                                <option>生活自理皆需協助</option>
+                                <option>可自行用餐，盥洗、更衣及如廁需協助</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="adls-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂ADLs狀況">
+                        </div>
+                        <div>
+                            <label for="tubes-select" class="form-label">管路</label>
+                            <select id="tubes-select" data-custom-target="tubes-custom" class="form-select custom-select">
+                                <option value="">無</option>
+                                <option>鼻胃管留置</option>
+                                <option>尿管留置</option>
+                                <option>鼻胃管及尿管留置</option>
+                                <option value="custom">其他（請手動輸入）</option>
+                            </select>
+                            <input type="text" id="tubes-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂管路狀況">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 8: IADLs -->
+                <section>
+                    <h2 class="section-title">八、居家生活</h2>
+                    <div>
+                       <label for="iadls-select" class="form-label">居家生活</label>
+                       <select id="iadls-select" data-custom-target="iadls-custom" class="form-select custom-select">
+                            <option>取得商品、準備餐點及做家事對案主而言都有困難</option>
+                            <option>三餐、家務皆由機構人員協助處理</option>
+                            <option>具備購物及處理家務能力</option>
+                            <option value="custom">其他（請手動輸入）</option>
+                        </select>
+                        <input type="text" id="iadls-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂描述">
+                    </div>
+                </section>
+
+                <!-- Section 9: Participation -->
+                <section>
+                    <h2 class="section-title">九、社會參與</h2>
+                    <div>
+                        <label for="participation-select" class="form-label">社會參與</label>
+                        <select id="participation-select" data-custom-target="participation-custom" class="form-select custom-select">
+                            <option>活動範圍皆於機構內，無外出參與活動</option>
+                            <option>活動範圍皆於機構內，尚可配合參與機構活動</option>
+                            <option>平時多臥床，無參與機構及社區活動</option>
+                            <option>對於機構內活動尚可配合</option>
+                            <option value="custom">其他（請手動輸入）</option>
+                        </select>
+                        <input type="text" id="participation-custom" class="form-input mt-2 hidden" placeholder="請輸入自訂社會參與狀況">
+                    </div>
+                </section>
+            </div>
+
+            <div class="mt-10 text-center">
+                <button id="generateBtn" class="btn btn-primary w-full sm:w-auto">
+                    產生報告
+                </button>
+            </div>
+
+            <div id="outputSection" class="mt-10 hidden">
+                <h2 class="section-title">生成的報告</h2>
+                <div class="mt-4 relative">
+                    <div id="reportOutput" class="w-full bg-slate-50 p-4 rounded-lg whitespace-pre-wrap border border-slate-200 min-h-[200px] text-slate-800"></div>
+                    <button id="copyBtn" class="btn btn-secondary absolute top-3 right-3 px-3 py-1 text-sm">
+                        複製
+                    </button>
+                </div>
+            </div>
+
+            <div class="absolute bottom-4 right-6 text-xs text-slate-400 font-mono">
+                114/9/15版本 Han
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 取得所有需要的 DOM 元素
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const outputSection = document.getElementById('outputSection');
+            const reportOutput = document.getElementById('reportOutput');
+
+            // 將所有表單欄位組織成一個物件，方便存取
+            const fields = {
+                caseAge: document.getElementById('caseAge'),
+                caseGender: document.getElementById('caseGender'),
+                disability: document.getElementById('disability'),
+                institution: document.getElementById('institution'),
+                assessmentPurpose: { select: document.getElementById('assessmentPurpose-select'), custom: document.getElementById('assessmentPurpose-custom') },
+                familyStatus: document.getElementById('familyStatus'),
+                mainContact: { select: document.getElementById('mainContact-select'), custom: document.getElementById('mainContact-custom') },
+                cognition: { select: document.getElementById('cognition-select'), custom: document.getElementById('cognition-custom') },
+                sensory: { select: document.getElementById('sensory-select'), custom: document.getElementById('sensory-custom') },
+                emotion: { select: document.getElementById('emotion-select'), custom: document.getElementById('emotion-custom') },
+                routineTasks: { select: document.getElementById('routineTasks-select'), custom: document.getElementById('routineTasks-custom') },
+                adls: { select: document.getElementById('adls-select'), custom: document.getElementById('adls-custom') },
+                tubes: { select: document.getElementById('tubes-select'), custom: document.getElementById('tubes-custom') },
+                communication: { select: document.getElementById('communication-select'), custom: document.getElementById('communication-custom') },
+                mobility: { select: document.getElementById('mobility-select'), custom: document.getElementById('mobility-custom') },
+                iadls: { select: document.getElementById('iadls-select'), custom: document.getElementById('iadls-custom') },
+                participation: { select: document.getElementById('participation-select'), custom: document.getElementById('participation-custom') },
+            };
+
+            // 輔助函式：根據選單或自訂輸入來取得值
+            function getFieldValue(field) {
+                // 檢查是否為自訂選單結構
+                if (field && field.select && field.custom) {
+                    return field.select.value === 'custom' ? field.custom.value.trim() : field.select.value;
+                }
+                // 如果是單一輸入或選單，直接回傳值，並處理空值
+                return field ? field.value.trim() : '';
+            }
+
+            // 監聽所有自訂選單，控制自訂輸入框的顯示與隱藏
+            document.querySelectorAll('.custom-select').forEach(selectElement => {
+                const customInputId = selectElement.dataset.customTarget;
+                const customInputElement = document.getElementById(customInputId);
+                if (customInputElement) {
+                    selectElement.addEventListener('change', () => {
+                        customInputElement.classList.toggle('hidden', selectElement.value !== 'custom');
+                    });
+                }
+            });
+
+            // 點擊「產生報告」按鈕時的事件處理
+            generateBtn.addEventListener('click', () => {
+                const name = '案主'; // 案主名稱固定
+                
+                // 讀取所有欄位的值
+                const age = getFieldValue(fields.caseAge);
+                const gender = getFieldValue(fields.caseGender);
+                const disability = getFieldValue(fields.disability);
+                const institution = getFieldValue(fields.institution);
+                const assessmentPurpose = getFieldValue(fields.assessmentPurpose);
+                const familyStatus = getFieldValue(fields.familyStatus);
+                const mainContact = getFieldValue(fields.mainContact);
+                const cognition = getFieldValue(fields.cognition);
+                const sensory = getFieldValue(fields.sensory);
+                const emotion = getFieldValue(fields.emotion);
+                const routineTasks = getFieldValue(fields.routineTasks);
+                const adls = getFieldValue(fields.adls);
+                const tubes = getFieldValue(fields.tubes);
+                const communication = getFieldValue(fields.communication);
+                const mobility = getFieldValue(fields.mobility);
+                const iadls = getFieldValue(fields.iadls);
+                const participation = getFieldValue(fields.participation);
+
+                // 動態建構報告內容的陣列
+                const reportParts = [];
+
+                // 第一段：基本資料
+                let intro = `1. ${name}為`;
+                if (age) intro += `${age}歲`;
+                if (gender) intro += gender;
+                if (disability) intro += `，領有${disability}身心障礙證明`;
+                intro += '。';
+                if (institution) intro += `因生活自理能力不佳，且家屬無力照顧，故現安置於${institution}。`;
+                if (assessmentPurpose) intro += `${assessmentPurpose}。`;
+                reportParts.push(intro);
+                
+                // 第二段：家庭支持
+                const familyContent = [familyStatus, mainContact].filter(Boolean);
+                if (familyContent.length > 0) {
+                    reportParts.push(`2. 家庭部分，${familyContent.join('，')}。`);
+                }
+
+                // 後續段落
+                if (cognition || sensory) {
+                    reportParts.push(`3. 學習與運用知識部分，案主認知${cognition || '（無資料）'}；${sensory || '（無資料）'}。`);
+                }
+                if (emotion || routineTasks) {
+                    reportParts.push(`4. 情緒部分，案主情緒狀況${emotion || '（無資料）'}；執行日常例行事務能力${routineTasks || '（無資料）'}。`);
+                }
+                if (communication) {
+                    reportParts.push(`5. 溝通能力部分，案主${communication}。`);
+                }
+                if (mobility) {
+                    reportParts.push(`6. 行動部分，案主${mobility}。`);
+                }
+                
+                // 第七段：自我照顧與管路
+                const selfCareContent = [];
+                if (adls) selfCareContent.push(`案主${adls}`);
+                if (tubes) selfCareContent.push(`有${tubes}`);
+                if (selfCareContent.length > 0) {
+                    reportParts.push(`7. 自我照顧部分，${selfCareContent.join('，')}。`);
+                }
+
+                if (iadls) {
+                    reportParts.push(`8. 居家生活部分，${iadls}。`);
+                }
+                if (participation) {
+                    reportParts.push(`9. 社會參與部分，案主${participation}。`);
+                }
+
+                // 將所有段落組合成完整的報告
+                reportOutput.textContent = reportParts.join('\n\n');
+                outputSection.classList.remove('hidden');
+            });
+
+            // 點擊「複製」按鈕時的事件處理
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(reportOutput.textContent).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = '已複製!';
+                    setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
+                }).catch(err => console.error('無法複製文字: ', err));
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
